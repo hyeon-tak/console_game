@@ -10,6 +10,7 @@ namespace Games
         
         internal class Item 
         {
+            public Stack<bool> OpenTreasure = new Stack<bool>();
             public string ItemName { get; set; }
             public int ItemHp { get; set; }
             public int ItemAtk { get; set; }
