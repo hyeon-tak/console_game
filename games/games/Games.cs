@@ -20,6 +20,22 @@ namespace Games
 
     internal partial class Games
     {
+        List<Tuple<int, int>> MapMove = new List<Tuple<int, int>>()
+            {
+                new Tuple<int, int>(8, 3),  //0
+                new Tuple<int, int>(7, 11), //1
+                new Tuple<int, int>(8, 11), //2
+                new Tuple<int, int>(14, 5), //3
+                new Tuple<int, int>(14, 6), //4
+                new Tuple<int, int>(2, 6),  //5
+                new Tuple<int, int>(2, 5),  //6
+                new Tuple<int, int>(7, 1),  //7
+                new Tuple<int, int>(8, 1),  //8
+                new Tuple<int, int>(2, 11), //9
+                new Tuple<int, int>(2, 10)  //10
+            };
+
+
         public static int playerX = 1;
         public static int playerY = 1;
         public static string[,] field;
@@ -29,9 +45,6 @@ namespace Games
 
         static void Main(string[] args)
         {
-
-
-
             Player player = ChoiceJob();//시작은 직업 선택으로
             Item item = new Item("", 0, 0, 0, 0);//기본 인벤토리
             EquipItem equipItem = new EquipItem("", 0, 0, 0, 0);//기본 장착템
@@ -76,10 +89,6 @@ namespace Games
                 return ChoiceJob();
             }
         }
-
-
-
-
         static void WorldMap(Player player, Item item, EquipItem equipItem)
         {
             string[,] field = {                       //가운데
@@ -101,7 +110,6 @@ namespace Games
                 {"# ", "# ", "# ", "# ", "# ", "# ", "# ", "# ", "# ", "# ", "# ", "# ", "# "}
             };
             field[playerY, playerX] = "나";
-
             bool Moving = true;
 
             while (Moving)
@@ -164,13 +172,13 @@ namespace Games
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if (field[playerY, playerX] == field[8, 3])   /*Enter 누를 때 좌표가  8,3이면*/
+                        if (MapMove.Contains(0))   /*Enter 누를 때 좌표가  8,3이면*/
                         {
                             PlayerPosition.Add(new Tuple<int, int>(playerY, playerX));
                             Console.Clear();
                             Shop(player, item, equipItem);
                         }
-                        else if (field[playerY, playerX] == field[7, 11] || field[playerY, playerX] == field[8, 11])
+                        else if (MapMove.Contains(1) || MapMove.Contains(2))
                         {
                             PlayerPosition.Add(new Tuple<int, int>(playerY, playerX));
                             Console.Clear();
@@ -182,7 +190,6 @@ namespace Games
                 field[playerY, playerX] = "나";
             }
         }
-
         static void Shop(Player player, Item item, EquipItem equipItem)
         {
             string[,] shop = {
@@ -265,12 +272,12 @@ namespace Games
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if (shop[playerY, playerX] == shop[14, 5] || shop[playerY, playerX] == shop[14, 6])      /* Enter를 누를 때 좌표가  14,5이나 14, 6이면*/
+                        if (MapMove.Contains(3) || MapMove.Contains(4))      /* Enter를 누를 때 좌표가  14,5이나 14, 6이면*/
                         {
                             Console.Clear();                                                                    //상점 나가기 구현
                             WorldMap(player, item, equipItem);
                         }
-                        else if (shop[playerY, playerX] == shop[2, 5] || shop[playerY, playerX] == shop[2, 6])  /* 아니면 Enter를 누를 때 좌표가  2,5이나 2, 6이면*/
+                        else if (MapMove.Contains(5) || MapMove.Contains(6))  /* 아니면 Enter를 누를 때 좌표가  2,5이나 2, 6이면*/
                         {
                             BuyItem(player, item, equipItem);                                                              //상점을 이용
                         }
@@ -546,14 +553,14 @@ namespace Games
                         }
                         break;
                     case ConsoleKey.Enter:
-                        if (field[playerY, playerX] == field[7, 1] || field[playerY, playerX] == field[8, 1])   /*Enter 누를 때 좌표가  [7,1],[8,1]이면*/
+                        if (MapMove.Contains(7) || MapMove.Contains(8))   /*Enter 누를 때 좌표가  [7,1],[8,1]이면*/
                         {
                             Console.Clear();
                             WorldMap(player, item, equipItem);
                         }
                         else if (!openTreasure)
                         {
-                            if (field[playerY, playerX] == field[2, 10] || field[playerY, playerX] == field[2, 11])
+                            if (MapMove.Contains(9) || MapMove.Contains(10))
                             {
                                 item = new Item("방패", 0, 2, 5, 80);
                                 Console.WriteLine($"{item.ItemName}을(를) 획득했습니다");
